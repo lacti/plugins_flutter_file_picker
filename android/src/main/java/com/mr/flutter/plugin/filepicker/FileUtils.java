@@ -25,6 +25,11 @@ public class FileUtils {
 
     public static String getPath(final Uri uri, Context context) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        Log.i(TAG, "getPath from Uri: " + uri);
+        Log.i(TAG, " - authority: " + uri.getAuthority());
+        Log.i(TAG, " - scheme: " + uri.getScheme());
+        Log.i(TAG, " - path: " + uri.getPath());
+        Log.i(TAG, " - lastPathSegment: " + uri.getLastPathSegment());
         if (isKitKat) {
             return getForApi19(context, uri);
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
@@ -140,7 +145,11 @@ public class FileUtils {
     }
 
     public static String getFileName(Uri uri, Context context) {
-        String result = null;
+        String result = uri.getLastPathSegment();
+        if (result != null) {
+            Log.i(TAG, "Path[" + result + "] from lastPathSegment of Uri: " + uri);
+            return result;
+        }
 
         //if uri is content
         if (uri.getScheme() != null && uri.getScheme().equals("content")) {
